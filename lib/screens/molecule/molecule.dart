@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:replicariverpov2/injectionController/depencey_injeccion.dart';
+import 'package:replicariverpov2/models/productos_models.dart';
+import 'package:replicariverpov2/notifier/producto_state.dart';
 import 'package:replicariverpov2/provider/providers.dart';
 import 'package:replicariverpov2/screens/atoms/appbar.dart';
 import 'package:replicariverpov2/screens/atoms/icons.dart';
@@ -14,11 +16,16 @@ class ListaProductosTemplate extends HookConsumerWidget {
     final listaP = estadosProductos.listaProductos;
 
     _llamarDatos() {
-      ref.read(productoStateNotifierProvier.notifier).consultarProductos();
+      ref.watch(productoStateNotifierProvier.notifier).consultarProductos();
     }
 
+    /*ref.listen(productoStateNotifierProvier,
+        (previous, ProductosState productosState) {
+      if (productosState.status == ProductosStatus.productosCargados) {}
+    });*/
+
     return Scaffold(
-        appBar:AppBarMenu().menu(context),
+      appBar: AppBarMenu().menu(context),
       body: InkWell(
           onTap: _llamarDatos,
           child: Container(
@@ -29,7 +36,6 @@ class ListaProductosTemplate extends HookConsumerWidget {
                       leading: IconsTodo().Icon2(),
                       title: Text('${listaP[index].nombre}'),
                       subtitle: Text('${listaP[index].precio}'),
-                      
                     ))),
           )),
     );
